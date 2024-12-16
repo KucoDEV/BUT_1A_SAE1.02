@@ -1,4 +1,3 @@
-
 #include "SAE.h"
 
 int menu(void) {
@@ -6,8 +5,8 @@ int menu(void) {
     printf("------------- Menu -------------\n");
     printf("\t1. Jouer une partie prédéfinie\n");
     printf("\t2. Créer une nouvelle partie\n");
-    printf("\t3. Afficher la liste des joueurs triée par nom\n");
-    printf("\t4. Afficher la liste des joueurs triée par meilleur score\n");
+    printf("\t3. Afficher le tableau des scores triée par nom\n");
+    printf("\t4. Afficher le tableau des scores triée par meilleur score\n");
     printf("\t5. Afficher les statistisques d'un joueur\n");
     printf("\t9. Quitter\n");
     printf("--------------------------------\n");
@@ -18,6 +17,7 @@ int menu(void) {
 
 void global(void) {
     int choix = menu();
+    int codeErreur
     while (choix != 9) {
         switch (choix) {
         case 1:
@@ -29,15 +29,11 @@ void global(void) {
             break;
         
         case 3:
-            // Affichage
-            break;
-        
         case 4:
-            // Affichage
-            break;
-        
         case 5:
-            // Affichage
+            codeErreur = AffichageScore(choix);
+            if (codeErreur == 1)
+                printf("Erreur d'ouverture de fichier");
             break;
         
         default:
@@ -140,39 +136,175 @@ int victoireDuel(int attaque, char choix){//comparer le chiffre généré aléat
 
 
 
-//--------------------| Tableau |------------------//
+//--------------------| Affichage |------------------//
 
-int ChargerTabSc(Stats* stats)
+int AffichageScore(int choixMenu)
 {
     FILE * tscore = fopen("/Fichier/scoreboard.txt", "r");
     if (tscore == NULL)
-    {
-        printf("Erreur lors de l'ouverture du fichier\n");
         return -1;
-    }
+    
     
     int nbJoueurs;
     fscanf(tscore, "%d", &nbJoueurs);
+    
     int i=0;
+    Stats ts[nbJoueurs];
 
-    stats[i] = malloc(sizeof(Stats)); // premier malloc pour le premier fscanf avant le while
-    if (stats[i] == NULL) 
+    for (i=0; i<nbJoueurs; i++)
     {
-        printf("Erreur d'allocation de mémoire\n");
-        fclose(tscore);
-        return -2; // Erreur d'allocation
+        fscanf(tscore, "%s %d %f %d %d %d", 
+                        ts[i].pseudo,
+                        &ts[i].meilleurScore,
+                        &ts[i].moyenneScore,
+                        &ts[i].nbParties,
+                        &ts[i].victoire,
+                        &ts[i].défaite);
     }
-
-    for (i = 0; i < nbJoueurs; i++) 
+    
+    switch (choixMenu)
     {
-        fscanf(tscore,"%s %d %d %d %d %d",stats[i]->pseudo, stats[i]->&meilleurScores, stats[i]->&moyenneScores, stats[i]->&nbParties, stats[i]->&victoire, stats[i]->&défaite);
-        
-        stats[i] = malloc(sizeof(Stats));
-        if (stats[i] == NULL) 
+    case 3:
+        tabParNom(ts,nbJoueurs);
+        break;
+    case 4:
+        tabParScore(ts,nbJoueurs);
+        break;
+    case 5:
+        tabParScore(ts,nbJoueurs);
+        break;
+    default:
+        printf("\nComment êtes vous rentrér dans le chargement du tableau sans avoir sélectionné un choix d'affichage dans le menu ??? \n");
+        break;
+    }
+}
+//--------------------| Tableau trié par nom |------------------//
+
+void tabParNom(Stats ts[],int tlog)
+{
+    triEchangeNom(ts,tlog);
+    afficherTableau(ts,tlog);
+}
+
+//--------------------| Tableau trié par Score |------------------//
+
+void tabParScore(Stats ts[],int tlog)
+{
+    triEchangeScore(ts,tlog);
+    afficherTableau(ts,tlog);
+}
+
+//--------------------| Rechercher un Joueur |------------------//
+
+void rechercherJoueur(Stats ts[],int tlog)
+{
+    char cible[20];
+    int trouve;
+    int i;
+
+    printf("\nJoueur à afficher : ");
+    scanf("%s",cible);
+    trouve = rechercheDichomatique(ts,tlog,cible);
+
+    if (trouve != -1)
+    {
+        printf("\nStatistique du joueur %s : \n\n",cible);
+        printf("\nMeilleur Score : %d \n",ts[trouve].meilleurScore);
+        printf("\nMoyenne : %.2f \n",ts[trouve].moyenneScores);
+        printf("\nNb Parties : %d", ts[trouve].nbParties);
+        printf("\nVictoire : %d", ts[trouve].victoire);
+        printf("\nDéfaite : %d", ts[trouve].defaite);
+    }
+    
+
+//--------------------| tri |--------------------//
+
+int plusGrandNom(Stats tab[], int n)
+{
+    int pge = 0;
+    int i;
+    for ( i = 0; i < n; i++) 
+    {
+        if (strlen(tab[i].pseudo) > strlen(tab[pge].pseudo)) 
         {
-            printf("Erreur d'allocation de mémoire\n");
-            fclose(tscore);
-            return -2; // Erreur d'allocation 
+            pge = i;
         }
     }
+    return pge;
+}
+
+int plusGrandScore(Stats tab[],int n)
+{
+    int pge=0;
+    for (i=0;i<n;i++)
+    {
+        if (tab[i].meilleurScore>tab[pge].meilleurScore)
+        {
+            pge = i;
+        }
+    }
+    return pge;
+}
+
+void echanger(Stats tab[], int i, int j)
+{
+    Stats tmp = tab[j];
+    tab[j] = tab[i];
+    tab[i] = tmp;
+}
+
+void triEchangeNom(Stats tab[], int n)
+{
+    int max;
+    while (n > 1)
+    {
+        max = plusGrandNom(tab, n);
+        echanger(tab, max, n - 1); 
+        n = n - 1;
+    }
+}
+
+void triEchangeScore(Stats tab[], int n)
+{
+    int max;
+    while (n > 1)
+    {
+        max = plusGrandScore(tab, n);
+        echanger(tab, max, n - 1); 
+        n = n - 1;
+    }
+}
+
+//--------------------| Affichage Tab [Pseudo : BestScore] |--------------------//
+
+void afficherTableau(Stats tab[], int tlog)
+{
+    int i;
+    printf("\nTableau des Scores :\n\n");
+    for (i = 0; i < tlog; i++)
+    {
+        printf("%20s | %10d\n", tab[i].pseudo, tab[i].meilleurScore);
+    }
+}
+
+//--------------------| Recherche Dicho d'un Joueur |--------------------//
+
+int rechercheDichomatique(Stats tab[],int n,char cible[])
+{
+    int inf = 0;
+    int sup = n-1;
+    int mid;
+    while (inf <= sup)
+    {
+        mid = (inf + sup)/2;
+
+        if (strcmp(tab[mid].pseudo,cible) == 0)
+            return mid;
+
+        if (strcmp(cible,tab[mid].pseudo) > 0)
+            inf = mid+1;
+
+        else sup = mid+1;
+    }
+    return -1
 }

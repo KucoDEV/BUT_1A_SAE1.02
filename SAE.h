@@ -1,4 +1,3 @@
-
 #include "includes.h"
 
 typedef struct {
@@ -27,6 +26,12 @@ typedef struct {
 
 int menu(void);
 void global(void);
+
+
+
+void AffichageScore(int choixMenu);
+
+void afficherTableau(Stats tab[], int tlog);
 
 
 
