@@ -1,11 +1,9 @@
 // File d'attente
 
-#include "../includes.h"
+#include "stdio.h"
+#include "stdlib.h"
 
-typedef enum {
-    faux = 0,
-    vrai = 1
-} Booleen;
+#include "../Booleen/booleen.h"
 
 typedef struct Maillon {
     int valeur;
@@ -20,6 +18,6 @@ typedef struct {
 File fileVide(void);
 File adjq(File f, int x);
 File supt(File f);
-int tete(File f);
-int longueur(File f);
-Booleen estVide(File f);
+// int tete(File f);
+// int longueur(File f);
+// Booleen estVide(File f);

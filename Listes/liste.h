@@ -1,16 +1,14 @@
 // Liste simplement chainée
 
-#include "../includes.h"
+#include "stdio.h"
+#include "stdlib.h"
 
-typedef enum {
-    faux = 0,
-    vrai = 1
-} Booleen;
+#include "../Booleen/booleen.h"
 
-typedef struct Maillon {
+typedef struct maillons {
     int valeur;
-    struct Maillon *suiv;
-} Maillon, *Liste;
+    struct maillons *suiv;
+} maillons, *Liste;
 
 
 Liste listeVide(void);

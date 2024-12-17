@@ -11,7 +11,7 @@ typedef struct {
     char *pseudo[20];
     int meilleurScore;
     float moyenneScores;
-    int nbParties
+    int nbParties;
     int victoire;
     int defaite;
 } Stats;
@@ -29,7 +29,7 @@ void global(void);
 
 
 
-void AffichageScore(int choixMenu);
+int AffichageScore(int choixMenu);
 
 void afficherTableau(Stats tab[], int tlog);
 

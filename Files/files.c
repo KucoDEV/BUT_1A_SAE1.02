@@ -43,8 +43,8 @@ File supt(File f) {
     return f;
 }
 
-int tete(File f) {}
+// int tete(File f) {}
 
-int longueur(File f) {}
+// int longueur(File f) {}
 
-Booleen estVide(File f) {}
+// Booleen estVide(File f) {}
