@@ -23,8 +23,10 @@ typedef struct {
 typedef struct {
     char nom[50];
     int pointsDeVie;
+    int niveau;
     int degatsParAttaque;
     int nombreArmes;
+    int groupe;
     char* armes; // armes disponibles: P, F, C, O, #
 } Monstre;
 
