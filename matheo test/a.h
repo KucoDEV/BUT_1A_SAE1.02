@@ -1,5 +1,3 @@
-#include "includes.h"
-
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -47,25 +45,19 @@ typedef enum {
     SUPER_ARME = '#'
 } ArmeType;
 
-// A CHANGER CAR J'AI TOUT MIS DANS LA STRUCTURE JOUEUR
-typedef struct {
-    char *pseudo[20];
-    int meilleurScore;
-    float moyenneScores;
-    int nbParties;
-    int victoire;
-    int defaite;
-} Stats;
-
-int menu(void);
 void global(void);
+int menu(void);
 
+// void initialiserJoueur(Joueur* joueur, const char* pseudo);
+// void initialiserMonstre(Monstre* monstre, const char* nom, int niveau);
 
+// void jouerPartie(Partie* partie);
 
-int AffichageScore(int choixMenu);
+// void sauvegarderPartie(const Partie* partie, const char* fichier);
+// void chargerPartie(Partie* partie, const char* fichier);
 
-void afficherTableau(Stats tab[], int tlog);
+// void afficherJoueurs(Joueur* joueurs, int nbJoueurs, bool triParNom);
 
-
-
-
+// void trierJoueursParNom(Joueur* joueurs, int nbJoueurs);
+// void trierJoueursParScore(Joueur* joueurs, int nbJoueurs);
+// Joueur* rechercherJoueur(const Joueur* joueurs, int nbJoueurs, const char* pseudo);
