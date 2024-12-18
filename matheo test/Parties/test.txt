@@ -1,6 +1,0 @@
-un contexte de fou malade
-1
-Choin 999 999 4 P F C # 
-un autre contexte de fou malade
-1
-Dragon 999 1 4 P F C O 
