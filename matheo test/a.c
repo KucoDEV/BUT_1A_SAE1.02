@@ -77,7 +77,6 @@ void creerNouvellePartie(char* nomFichier) {
         printf("Ajouter l'arme surpuissante (1 pour oui, 0 pour non) : ");
         scanf("%d", &inclureSuperArme);
 
-        // Écrire les détails du monstre
         fprintf(fichier, "%s %d %d %d ", nom, pv, degats, 3 + inclureBonneArme + inclureSuperArme);
         fprintf(fichier, "%c %c %c ", PIERRE, FEUILLE, CISEAUX); // Armes de base
         if (inclureBonneArme) {
