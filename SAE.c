@@ -45,7 +45,11 @@ void global(void) {
             break;
 
         case 3: // Afficher le tableau des scores triés par nom
+            break;
+            
         case 4: // Afficher le tableau des scores triés par meilleur score
+            break;
+
         case 5: // Afficher les statistiques d'un joueur
             codeErreur = AffichageScore(choix);
             if (codeErreur == -1) {
@@ -71,6 +75,14 @@ void global(void) {
 // {      |        |   |        |      }
 //         `.____.'     `.____.'
 //
+
+void jouerPartiePredifinie(char* nomFichier) { 
+    pvJ = j.pointsDeVie;
+
+    while(pvJ > 0)
+        return ;
+}
+
 
 void creerNouvellePartie(char* nomFichier) {
     char chemin[20] = "Parties/";
@@ -167,7 +179,7 @@ void creerNouvellePartie(char* nomFichier) {
 }
 
 
-//--------------------| generation aléatoire |------------------//
+//--------------------| generation aléatoire & attaques |------------------//
 
 int attaqueMonstre(Monstre m){
     int attaque;
@@ -189,6 +201,20 @@ int attaqueMonstre(Monstre m){
     srand(time(NULL));//initie le générateur de rnd
     attaque = (rand() % (max - min + 1)) + min;
     return attaque;
+}
+
+char attaqueJoueur(void){
+    char choix;
+
+    printf("Avec quelle arme voulez vous vous battre ?\t P.pierre, F.feuille, C.ciseaux\n");
+    scanf("%c%*c", &choix);
+    
+    while(choix != 'P' || choix != 'C' || choix != 'F')
+    {
+        printf("Vous seriez prié d'entrer une valeur valide : P, C ou F\n");
+        scanf("%c%*c" , choix);
+    }
+    return choix;
 }
 
 
@@ -252,17 +278,35 @@ void retraitPV(Joueur j , Monstre m){
     int attaque;
     char choix;
     var = victoireDuel(attaque, choix, m);
-    if(var == 1)//le joueur a gagné
+
+    if(var == 1)//le joueur a gagné le duel
     {
         m.pointsDeVie = m.pointsDeVie - j.degatsParAttaque;
         return m.pointsDeVie;
     }
-    if(var == 0)//le monstre a perdu
+    if(var == 0)//le monstre a gagné le duel
     {
         j.pointsDeVie = j.pointsDeVie - m.degatsParAttaque;
         return j.pointsDeVie;
     }
 }
+
+// int estMort(Joueur j , Monstre m){
+//     //-1 monstre mort , -2 joueur mort
+//     int pvM = m.pointsDeVie;
+//     int pvJ = j.pointsDeVie;
+
+//     if (pvM == 0)
+//     {
+//         printf("monstre mort.\n");
+//         return -1;
+//     }
+//     if (pvJ == 0)
+//     {
+//         printf("Vous êtes mort, peut être une prochaine fois...\n");
+//         return -2;
+//     }
+// }
 
 int points(Monstre m){
     int scoreActuel = 0;
@@ -350,173 +394,3 @@ void degat(void){
 
 //--------------------| Affichage |------------------//
 
-// int AffichageScore(int choixMenu)
-// {
-//     FILE * tscore = fopen("/Fichier/scoreboard.txt", "r");
-//     if (tscore == NULL)
-//         return -1;
-    
-    
-//     int nbJoueurs;
-//     fscanf(tscore, "%d", &nbJoueurs);
-    
-//     int i=0;
-//     Stats ts[nbJoueurs];
-
-//     for (i=0; i<nbJoueurs; i++)
-//     {
-//         fscanf(tscore, "%s %d %f %d %d %d", 
-//                         ts[i].pseudo,
-//                         &ts[i].meilleurScore,
-//                         &ts[i].moyenneScore,
-//                         &ts[i].nbParties,
-//                         &ts[i].victoire,
-//                         &ts[i].défaite);
-//     }
-    
-//     switch (choixMenu)
-//     {
-//     case 3:
-//         tabParNom(ts,nbJoueurs);
-//         break;
-//     case 4:
-//         tabParScore(ts,nbJoueurs);
-//         break;
-//     case 5:
-//         tabParScore(ts,nbJoueurs);
-//         break;
-//     default:
-//         printf("\nComment êtes vous rentrér dans le chargement du tableau sans avoir sélectionné un choix d'affichage dans le menu ??? \n");
-//         break;
-//     }
-// }
-//--------------------| Tableau trié par nom |------------------//
-
-void tabParNom(Stats ts[],int tlog)
-{
-    triEchangeNom(ts,tlog);
-    afficherTableau(ts,tlog);
-}
-
-//--------------------| Tableau trié par Score |------------------//
-
-void tabParScore(Stats ts[],int tlog)
-{
-    triEchangeScore(ts,tlog);
-    afficherTableau(ts,tlog);
-}
-
-//--------------------| Rechercher un Joueur |------------------//
-
-void rechercherJoueur(Stats ts[],int tlog)
-{
-    char cible[20];
-    int trouve;
-    int i;
-
-    printf("\nJoueur à afficher : ");
-    scanf("%s",cible);
-    trouve = rechercheDichomatique(ts,tlog,cible);
-
-    if (trouve != -1)
-    {
-        printf("\nStatistique du joueur %s : \n\n",cible);
-        printf("\nMeilleur Score : %d \n",ts[trouve].meilleurScore);
-        printf("\nMoyenne : %.2f \n",ts[trouve].moyenneScores);
-        printf("\nNb Parties : %d", ts[trouve].nbParties);
-        printf("\nVictoire : %d", ts[trouve].victoire);
-        printf("\nDéfaite : %d", ts[trouve].defaite);
-    }
-}
-
-//--------------------| tri |--------------------//
-
-int plusGrandNom(Stats tab[], int n) {
-    int pge = 0;
-    int i;
-    for ( i = 0; i < n; i++) 
-    {
-        if (strlen(tab[i].pseudo) > strlen(tab[pge].pseudo)) 
-        {
-            pge = i;
-        }
-    }
-    return pge;
-}
-
-int plusGrandScore(Stats tab[],int n)
-{
-    int pge=0;
-    int i;
-    for (i=0;i<n;i++)
-    {
-        if (tab[i].meilleurScore>tab[pge].meilleurScore)
-        {
-            pge = i;
-        }
-    }
-    return pge;
-}
-
-void echanger(Stats tab[], int i, int j)
-{
-    Stats tmp = tab[j];
-    tab[j] = tab[i];
-    tab[i] = tmp;
-}
-
-void triEchangeNom(Stats tab[], int n)
-{
-    int max;
-    while (n > 1)
-    {
-        max = plusGrandNom(tab, n);
-        echanger(tab, max, n - 1); 
-        n = n - 1;
-    }
-}
-
-void triEchangeScore(Stats tab[], int n)
-{
-    int max;
-    while (n > 1)
-    {
-        max = plusGrandScore(tab, n);
-        echanger(tab, max, n - 1); 
-        n = n - 1;
-    }
-}
-
-//--------------------| Affichage Tab [Pseudo : BestScore] |--------------------//
-
-void afficherTableau(Stats tab[], int tlog)
-{
-    int i;
-    printf("\nTableau des Scores :\n\n");
-    for (i = 0; i < tlog; i++)
-    {
-        printf("%20s | %10d\n", tab[i].pseudo, tab[i].meilleurScore);
-    }
-}
-
-//--------------------| Recherche Dicho d'un Joueur |--------------------//
-
-int rechercheDichomatique(Stats tab[],int n,char cible[])
-{
-    int inf = 0;
-    int sup = n-1;
-    int mid;
-    while (inf <= sup)
-    {
-        mid = (inf + sup)/2;
-
-        if (strcmp(tab[mid].pseudo,cible) == 0)
-            return mid;
-
-        if (strcmp(cible,tab[mid].pseudo) > 0)
-            inf = mid+1;
-
-        else sup = mid+1;
-    }
-    return -1;
-}
