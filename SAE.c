@@ -45,16 +45,18 @@ void global(void) {
             break;
 
         case 3: // Afficher le tableau des scores triés par nom
+            Stats ts = ChargeTabAffichage();
+            tabParNom(ts,nbJoueurs);
             break;
             
         case 4: // Afficher le tableau des scores triés par meilleur score
+            Stats ts = ChargeTabAffichage();
+            tabParScore(ts,nbJoueurs);
             break;
 
         case 5: // Afficher les statistiques d'un joueur
-            codeErreur = AffichageScore(choix);
-            if (codeErreur == -1) {
-                printf("Erreur : Impossible d'ouvrir le fichier des scores.\n");
-            }
+            Stats ts = ChargeTabAffichage();
+            rechercherJoueur(ts,nbJoueurs);
             break;
 
         default:
@@ -76,8 +78,8 @@ void global(void) {
 //         `.____.'     `.____.'
 //
 
-void jouerPartiePredifinie(char* nomFichier) { 
-    pvJ = j.pointsDeVie;
+void jouerPartiePredifinie(Joueur j, char* nomFichier) { 
+    int pvJ = j.pointsDeVie;
 
     while(pvJ > 0)
         return ;
@@ -337,7 +339,9 @@ int points(Monstre m){
 
 //cette partie contient les fonctions "code de triche"
 
-void konami(void){
+//une utilisation par pouvoir par partie
+
+void konami(Joueur j){
     //uuddlrlrba + "\0" -> 11 caractères
     char tab[11];
     char code[11] = "uuddlrlrba";
@@ -347,7 +351,10 @@ void konami(void){
     {
         printf('You found glasses, it increase you accuracy, you can now deal critical damage !\n');
         printf("         ________     ________\n   . - ~|        |-^-|        |~ - .\n {      |        |   |        |      }\n         `.____.'     `.____.'\n");
-        //appliquer le pouvoir
+        int reussi = critique(j);
+        if (reussi == 1)
+            printf("double dégat !");
+        else printf("dégat simple");
     }
     return;
 }
@@ -356,12 +363,17 @@ int critique(Joueur j){//a 15% de faire degat *2
     int nombre;
     int min = 1;
     int max = 100;
+    int utilisationMax = 1;
+    int utilisation;
+    int reussi=0;
 
     srand(time(NULL));//initie le générateur de rnd
     nombre = (rand() % (max - min + 1)) + min;
     if(nombre > 0 || nombre <= 15)
         j.degatsParAttaque = j.degatsParAttaque * 2;
-    return j.degatsParAttaque;
+        reussi = 1;
+    return reussi;
+    //nb d'utilisation max dans le combat
 }
 
 void soin(void){
@@ -389,8 +401,10 @@ void degat(void){
     return;
 }
 
-
+//autre pouvoir : faire bouger les probas que le monstre fasse un coup particulier.
 
 
 //--------------------| Affichage |------------------//
+
+
 

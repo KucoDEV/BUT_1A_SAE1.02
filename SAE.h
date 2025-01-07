@@ -59,15 +59,29 @@ typedef struct {
     int defaite;
 } Stats;
 
-int menu(void);
 void global(void);
+int menu(void);
+void chargerJoueurs(char* nomFichier, Joueur** joueurs, int* nbJoueurs);
+void creerNouvellePartie(char* nomFichier);
+void afficherJoueurs(Joueur *joueur, int nbJoueurs);
+int main(void);
 
 
+//--------------------| Fonction d'affichage |--------------------//
 
-int AffichageScore(int choixMenu);
-
-void afficherTableau(Stats tab[], int tlog);
-
-
-
-
+int ChargeTabAffichage(void);
+void tabParNom(Stats ts[],int tlog);
+void tabParScore(Stats ts[],int tlog);
+void rechercherJoueur(Stats ts[],int tlog);
+int plusGrandNom(Stats tab[], int n);
+int plusGrandScore(Stats tab[],int n);
+void echanger(Stats tab[], int i, int j);
+void triEchangeNom(Stats tab[], int n);
+void triEchangeScore(Stats tab[], int n);
+void afficherTableauScore(Stats tab[], int tlog);
+void afficherTableauNom(Stats tab[], int tlog);
+void afficherTableauLettre(Stats tab[], int tlog);
+int rechercheDichomatique(Stats tab[],int n,char cible[]);
+void affichageJoueur(Stats ts[],int tlo, int trouve, char cible[]);
+void affichageLettre(Stats tab[], int tlog, char Lettre);
+void afficherDerniers(Stats tab[], int tlog, int x);
