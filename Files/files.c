@@ -43,8 +43,24 @@ File supt(File f) {
     return f;
 }
 
-// int tete(File f) {}
+int tete(File f) {
+    if (estVide(f)) {
+        printf("La file est vide\n");
+        exit(1);
+    }
+    return f.tete->valeur;
+}
 
-// int longueur(File f) {}
+int longueur(File f) {
+    int len = 0;
+    Maillon *m = f.tete;
+    while (m != NULL) {
+        len++;
+        m = m->suiv;
+    }
+    return len;
+}
 
-// Booleen estVide(File f) {}
+int estVide(File f) {
+    return (f.tete == NULL);
+}

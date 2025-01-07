@@ -1,8 +1,0 @@
-7
-railgun 4000 500 2 1 1 
-Kuco 4050 500 2 1 1 
-LaSagesse 100000000 500 2 1 1 
-LaSalle 50 500 2 1 1 
-DiouD 5 500 2 1 1 
-Neyor 3000 500 2 1 1 
-Hedo 9 500 2 1 1  
