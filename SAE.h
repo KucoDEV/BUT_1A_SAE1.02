@@ -1,4 +1,3 @@
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -64,3 +63,20 @@ void creerNouvellePartie(char* nomFichier);
 int victoireDuel(int attaque, char choix, Monstre m);
 char attaqueJoueur(void);
 int attaqueMonstre(Monstre m);
+
+int ChargeTabAffichage(int choix);
+void tabParNom(Stats ts[],int tlog);
+void tabParScore(Stats ts[],int tlog);
+void rechercherJoueur(Stats ts[],int tlog);
+int plusGrandNom(Stats tab[], int n);
+int plusGrandScore(Stats tab[],int n);
+void echanger(Stats tab[], int i, int j);
+void triEchangeNom(Stats tab[], int n);
+void triEchangeScore(Stats tab[], int n);
+void afficherTableauScore(Stats tab[], int tlog);
+void afficherTableauNom(Stats tab[], int tlog);
+void afficherTableauLettre(Stats tab[], int tlog);
+int rechercheDichomatique(Stats tab[],int n,char cible[]);
+void affichageJoueur(Stats ts[],int tlo, int trouve, char cible[]);
+void affichageLettre(Stats tab[], int tlog, char Lettre);
+void afficherDerniers(Stats tab[], int tlog, int x);

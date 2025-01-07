@@ -46,17 +46,20 @@ void global(void) {
             }
 
         case 3: // Afficher le tableau des scores triés par nom
-            {
+            {   
+                ChargeTabAffichage(choix);
                 break;
             }
 
         case 4: // Afficher le tableau des scores triés par meilleur score
-            {
+            {   
+                ChargeTabAffichage(choix);
                 break;
             }
 
         case 5: // Afficher les statistiques d'un joueur
             {
+                ChargeTabAffichage(choix);
                 break;
             }
 
@@ -326,4 +329,357 @@ char attaqueJoueur(void) {
 int attaqueMonstre(Monstre m) {
     int min = 1, max = (m.niveau == 1 ? 4 : (m.niveau == 2 ? 3 : 5));
     return (rand() % (max - min + 1)) + min;
+}
+
+//--------------------| Affichage |------------------//
+
+int ChargeTabAffichage(int choix)
+{
+    FILE * tscore = fopen("Parties/scoreboard.txt", "r");
+    if (tscore == NULL)
+    {
+        printf("pb ouverture de fichier\n");
+        return -1;
+    }
+    
+    int nbJoueurs;
+    fscanf(tscore, "%d", &nbJoueurs);
+    
+    int i=0;
+    Stats ts[nbJoueurs];
+
+    for (i=0; i<nbJoueurs; i++)
+    {
+        fscanf(tscore, "%s %d %f %d %d %d", 
+                        ts[i].pseudo,
+                        &ts[i].meilleurScore,
+                        &ts[i].moyenneScores,
+                        &ts[i].nbParties,
+                        &ts[i].victoire,
+                        &ts[i].defaite);
+    }
+
+    switch (choix)
+    {
+    case 3:
+        tabParNom(ts,nbJoueurs);
+        break;
+    case 4:
+        tabParScore(ts,nbJoueurs);
+        break;
+    case 5:
+        rechercherJoueur(ts,nbJoueurs);
+        break;
+    default:
+        break;
+    }
+}
+//--------------------| Tableau trié par nom |------------------//
+
+void tabParNom(Stats ts[],int tlog)
+{
+    int choix = 0;
+    char lettreCible;
+    printf("--------------------------------\n");
+    printf("Voulez vous :\n\t1 : Afficher tout le tableau (%d Joueurs)\n\t2 : Afficher ceux commençant par une certaine lettre\n\t3 : Annuler\n",tlog);
+    printf("> Choix: ");
+    scanf("%d%*c",&choix);
+    
+    switch (choix)
+    {
+    case 1:
+        triEchangeNom(ts,tlog);
+        afficherTableauNom(ts,tlog); // affiche le tableau entier trié par nom
+        break;
+    case 2:
+        printf("> Quelle lettre: ");
+        scanf("%c",&lettreCible);
+        printf("\n");
+
+        triEchangeNom(ts,tlog);
+        affichageLettre(ts,tlog,lettreCible);
+        break;
+    case 3:
+        return;
+        break;
+    default:
+        printf("Choix invalide\n");
+        break;
+    }
+}
+
+//--------------------| Tableau trié par Score |------------------//
+
+void tabParScore(Stats ts[],int tlog)
+{
+    int choix = 0;
+
+    if (tlog > 25) // proposer toutes les options si le tableau est plus grand que 25
+    {
+        printf("--------------------------------\n");
+        printf("Voulez vous :\n\t1 : Afficher tout le tableau (%d Joueurs)\n\t2 : Afficher les 10 premiers joueurs\n\t3 : Afficher les 25 premiers joueurs\n\t4 : Afficher les 10 derniers joueurs\n\t5 : Afficher les 25 derniers joueurs\n\t6 : Annuler\n",tlog);
+        printf("> Choix: ");
+        scanf("%d%*c",&choix);
+
+        switch (choix)
+        {
+        case 1:
+            triEchangeScore(ts,tlog);
+            afficherTableauScore(ts,tlog);
+            break;
+        case 2:
+            triEchangeScore(ts,tlog);
+            afficherTableauScore(ts,10);
+            break;
+        case 3:
+            triEchangeScore(ts,tlog);
+            afficherTableauScore(ts,25);
+            break;
+        case 4:
+            triEchangeScore(ts,tlog);
+            afficherDerniers(ts,tlog,10);
+            break;
+        case 5:
+            triEchangeScore(ts,tlog);
+            afficherDerniers(ts,tlog,25);
+            break;
+        case 6:
+            break;
+        default:
+            printf("Choix invalide\n");
+            break;
+        }
+    }
+    else if (tlog > 10) // proposer les options pour limiter l'affichage à 10 si le tableau est plus grand que 10
+    {
+        printf("--------------------------------\n");
+        printf("\nVoulez vous :\n\t1 : Afficher tout le tableau (%d Joueurs)\n\t2 : Afficher les 10 premiers joueurs\n\t3 : Afficher les 10 derniers joueurs\n\t4 : Annuler\n",tlog);
+        printf("> Choix: ");
+        scanf("%d%*c",&choix);
+
+        switch (choix)
+        {
+        case 1:
+            triEchangeScore(ts,tlog);
+            afficherTableauScore(ts,tlog);
+            break;
+        case 2:
+            triEchangeScore(ts,tlog);
+            afficherTableauScore(ts,10);
+            break;
+        case 3:
+            triEchangeScore(ts,tlog);
+            afficherDerniers(ts,tlog,10);
+            break;
+        case 4:
+            break;
+        default:
+            printf("Choix invalide\n");
+            break;
+        }
+    }
+    else
+    {                    // proposer seulement l'option afficher tout le tableau puisqu'il est plus petit ou égal à 10
+        printf("--------------------------------\n");
+        printf("Voulez vous :\n\t1 : Afficher tout le tableau (%d Joueurs)\n\t2 : Annuler\n",tlog);
+        printf("> Choix: ");
+        scanf("%d%*c",&choix);
+
+        switch (choix)
+        {
+        case 1:
+            triEchangeScore(ts,tlog);
+            afficherTableauScore(ts,tlog);
+            break;
+        case 2:
+            break;
+        default:
+            printf("Choix invalide\n");
+            break;
+        }
+    }
+} 
+
+//--------------------| Rechercher un Joueur |------------------//
+
+void rechercherJoueur(Stats ts[],int tlog)
+{
+    char cible[20];
+    int trouve;
+    int i;
+
+    triEchangeNom(ts,tlog);
+
+    printf("> Joueur à afficher : ");
+    scanf("%19s",cible);
+    trouve = rechercheDichomatique(ts,tlog,cible);
+
+    if (trouve != -1)
+        affichageJoueur(ts,tlog,trouve,cible);
+    else
+        printf("Le Joueur '%s' n'existe pas\n",cible);
+}
+
+void affichageJoueur(Stats ts[],int tlo, int trouve, char cible[])
+{
+    printf("--------------------------------\n");
+    printf("Statistique du joueur %s : \n\n",cible);
+    printf("\tMeilleur Score : %d \n",ts[trouve].meilleurScore);
+    printf("\tMoyenne : %.2f \n",ts[trouve].moyenneScores);
+    printf("\tNb Parties : %d\n", ts[trouve].nbParties);
+    printf("\tVictoire : %d\n", ts[trouve].victoire);
+    printf("\tDéfaite : %d\n\n", ts[trouve].defaite);
+}
+
+//--------------------| tri |--------------------//
+
+int plusGrandNom(Stats tab[], int n)
+{
+    int pge = 0;
+    int i;
+    for (i = 0; i < n; i++) 
+    {
+        if (strcasecmp(tab[i].pseudo, tab[pge].pseudo) > 0) 
+        {
+            pge = i;
+        }
+    }
+    return pge;
+}
+
+int plusGrandScore(Stats tab[],int n)
+{
+    int pge=0;
+    int i;
+    for (i=0;i<n;i++)
+    {
+        if (tab[i].meilleurScore<tab[pge].meilleurScore)
+        {
+            pge = i;
+        }
+    }
+    return pge;
+}
+
+void echanger(Stats tab[], int i, int j)
+{
+    Stats tmp = tab[j];
+    tab[j] = tab[i];
+    tab[i] = tmp;
+}
+
+void triEchangeNom(Stats tab[], int n)
+{
+    int max;
+    while (n > 1)
+    {
+        max = plusGrandNom(tab, n);
+        echanger(tab, max, n - 1); 
+        n = n - 1;
+    }
+}
+
+void triEchangeScore(Stats tab[], int n)
+{
+    int max;
+    while (n > 1)
+    {
+        max = plusGrandScore(tab, n);
+        echanger(tab, max, n - 1); 
+        n = n - 1;
+    }
+}
+
+//--------------------| Affichage Tab [Pseudo : BestScore] |--------------------//
+
+void afficherTableauScore(Stats tab[], int tlog)
+{
+    int i;
+    printf("--------------------------------\n");
+    printf("Tableau des Scores :\n\n");
+    for (i = 0; i < tlog; i++)
+    {
+        if (i==0)
+            printf("%4der  | %20s | %10d\n",i+1, tab[i].pseudo, tab[i].meilleurScore);
+        else
+            printf("%4deme | %20s | %10d\n",i+1, tab[i].pseudo, tab[i].meilleurScore);
+    }
+    printf("\n");
+}
+
+void afficherTableauNom(Stats tab[], int tlog)
+{
+    int i;
+    printf("--------------------------------\n");
+    printf("Tableau des Scores :\n\n");
+    for (i = 0; i < tlog; i++)
+    {
+        if (i==0)
+            printf("%20s | %10d\n", tab[i].pseudo, tab[i].meilleurScore);
+        else
+            printf("%20s | %10d\n", tab[i].pseudo, tab[i].meilleurScore);
+    }
+    printf("\n");
+}
+//--------------------| Recherche Dicho d'un Joueur |--------------------//
+
+int rechercheDichomatique(Stats tab[], int n, char cible[])
+{
+    int inf = 0;
+    int sup = n - 1;
+    int mid;
+    while (inf <= sup)
+    {
+        mid = (inf + sup) / 2;
+
+        if (strcmp(tab[mid].pseudo, cible) == 0)
+            return mid;
+
+        if (strcmp(cible, tab[mid].pseudo) > 0)
+            inf = mid + 1;
+        else
+            sup = mid - 1;
+    }
+    return -1;
+}
+
+//--------------------| Affichage Suivant Lettre |--------------------//
+
+void affichageLettre(Stats tab[], int tlog, char Lettre)
+{
+    int i;
+    printf("--------------------------------\n");
+    printf("Tableau des Scores :\n\n");
+    for (i = 0; i < tlog; i++)
+    {
+        if (Lettre >= 97) // si minuscule
+            if (tab[i].pseudo[0] == Lettre || tab[i].pseudo[0] == Lettre - 32)
+            {
+                printf("%20s | %10d\n", tab[i].pseudo, tab[i].meilleurScore);
+            }
+        if (Lettre >= 65 && Lettre <= 90) // si majuscule
+            if (tab[i].pseudo[0] == Lettre || tab[i].pseudo[0] == Lettre + 32)
+            {
+                printf("%20s | %10d\n", tab[i].pseudo, tab[i].meilleurScore);
+            }
+    }
+    printf("\n");
+}
+
+
+//--------------------| Affichage x Derniers |--------------------//
+
+void afficherDerniers(Stats tab[], int tlog, int x)
+{
+    int i;
+    printf("--------------------------------\n");
+    printf("Tableau des Scores :\n\n");
+    for (i = tlog-x ; i < tlog; i++)
+    {
+        if (i==0)
+            printf("%4der  | %20s | %10d\n",i+1, tab[i].pseudo, tab[i].meilleurScore);
+        else
+            printf("%4deme | %20s | %10d\n",i+1, tab[i].pseudo, tab[i].meilleurScore);
+    }
+    printf("\n");
 }
