@@ -603,13 +603,13 @@ void affichageJoueur(Stats ts[],int tlo, int trouve, char cible[]) {
 }
 
 /**
- * \brief Fonction qui permet de 
+ * \brief Fonction qui permet de renvoyer l'indice (place dans le tableau) du pseudo d'un joueur le plus petit (dans l'ordre alphabetique)
  * \author MIOTTO Quentin
  * 
  * \param tab Tableau des stats
  * \param n Nombre de joueur dans le tableau
  * 
- * \return 
+ * \return l'indice du plus petit pseudo d'un joueur
  */
 int plusGrandNom(Stats tab[], int n) {
     int pge = 0;
@@ -625,13 +625,13 @@ int plusGrandNom(Stats tab[], int n) {
 }
 
 /**
- * \brief Fonction qui permet de
+ * \brief Fonction qui permet de renvoyer l'indice (place dans le tableau) du Joueur ayant le grand Score
  * \author MIOTTO Quentin
  * 
  * \param ts Tableau des stats
  * \param tlog Nombre de joueur dans le tableau
  * 
- * \return 
+ * \return l'indice du Joueur ayant le plus grand Score
  */
 int plusGrandScore(Stats tab[],int n) {
     int pge=0;
@@ -792,12 +792,12 @@ void affichageLettre(Stats tab[], int tlog, char Lettre) {
 }
 
 /**
- * \brief Fonction qui permet d'afficher 
+ * \brief Fonction qui permet d'afficher le tableau des scores à partir du bas et limiter la taille du tableau afficher en fonction de x
  * \author MIOTTO Quentin
  * 
  * \param ts Tableau des stats
  * \param tlog Nombre de joueur dans le tableau
- * \param x 
+ * \param x taille du tableau afficher choisis dans le menu par l'utilisateur (10 ou 25)
  */
 void afficherDerniers(Stats tab[], int tlog, int x) {
     int i;
