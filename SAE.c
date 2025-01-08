@@ -342,17 +342,17 @@ void creerNouvellePartie(char* nomFichier) {
  * \param m Structure du monstre correspondant au duel
  */
 int victoireDuel(int attaque, char choix, Monstre m) {
-    if ((attaque == 1 && choix == 'F') || (attaque == 2 && choix == 'C') || (attaque == 3 && choix == 'P') || (attaque == 5)) {
+    if ((attaque == 1 && choix == 'F') || (attaque == 2 && choix == 'C') || (attaque == 3 && choix == 'P') || (attaque == 4)) {
         return 1;
     }
-    if ((attaque == 1 && choix == 'C') || (attaque == 2 && choix == 'P') || (attaque == 3 && choix == 'F') || (attaque == 4)) {
+    if ((attaque == 1 && choix == 'C') || (attaque == 2 && choix == 'P') || (attaque == 3 && choix == 'F') || (attaque == 5)) {
         return 0;
     }
     return -1;
 }
 
 /**
- * \brief Fonction qui permet de récuprer le choix du joueur
+ * \brief Fonction qui permet de récupérer le choix du joueur
  * \author CABARET Benjamin
  */
 char attaqueJoueur(void) {
