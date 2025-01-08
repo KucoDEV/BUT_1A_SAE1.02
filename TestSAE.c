@@ -1,7 +1,17 @@
+/**
+ * \file TestSAE.c
+ * \brief Fichier permettant le fonctionnement de la SAE
+ * 
+ * \authors CABARET Benjamin, MIOTTO Quentin, PICHOT-MOÏSE Mathéo
+ * \date 5 décembre 2024 -> 10 janvier 2025
+ */
 #include "SAE.h"
 
-void testDuel() {
-    // Initialisation des données du joueur et du monstre
+/**
+ * \brief Fonction qui permet de tester les duels
+ * \author PICHOT-MOÏSE Mathéo
+ */
+void testDuel(void) {
     Joueur joueur = {"Chevalier", 20, 3, {0}, 0, 0, 0};
     Monstre monstre = {"Dragon", 10, 2, 2, 3, 1, "PFC"};
 
@@ -34,6 +44,9 @@ void testDuel() {
     printf("Fin du test du duel.\n");
 }
 
+/**
+ * \brief Permet de lancer le programme
+ */
 int main(void) {
     global();
     return 0;

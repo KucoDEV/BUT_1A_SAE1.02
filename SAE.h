@@ -1,3 +1,10 @@
+/**
+ * \file SAE.c
+ * \brief Fichier contenant les déclarations des fonctions de la SAE
+ * 
+ * \authors CABARET Benjamin, MIOTTO Quentin, PICHOT-MOÏSE Mathéo
+ * \date 5 décembre 2024 -> 10 janvier 2025
+ */
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -64,6 +71,7 @@ int victoireDuel(int attaque, char choix, Monstre m);
 char attaqueJoueur(void);
 int attaqueMonstre(Monstre m);
 
+// Fonctions liées à l'affiche
 int ChargeTabAffichage(int choix);
 void tabParNom(Stats ts[],int tlog);
 void tabParScore(Stats ts[],int tlog);
@@ -75,7 +83,6 @@ void triEchangeNom(Stats tab[], int n);
 void triEchangeScore(Stats tab[], int n);
 void afficherTableauScore(Stats tab[], int tlog);
 void afficherTableauNom(Stats tab[], int tlog);
-void afficherTableauLettre(Stats tab[], int tlog);
 int rechercheDichomatique(Stats tab[],int n,char cible[]);
 void affichageJoueur(Stats ts[],int tlo, int trouve, char cible[]);
 void affichageLettre(Stats tab[], int tlog, char Lettre);
