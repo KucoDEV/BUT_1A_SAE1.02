@@ -92,7 +92,7 @@ void global(void) {
 
 /**
  * \brief Fonction qui gère entièrement la partie
- * \author PICHOT-MOÏSE Mathéo
+ * \authors CABARET Benjamin, PICHOT-MOÏSE Mathéo
  * 
  * \param nomFichier Nom du fichier de la partie prédéfinie
  * \param pseudo Pseudo du joueur
