@@ -15,16 +15,28 @@
  */
 int menu(void) {
     int choix;
-    printf("------------- Menu -------------\n");
-    printf("\t1. Jouer une partie prédéfinie\n");
-    printf("\t2. Créer une nouvelle partie\n");
-    printf("\t3. Afficher le tableau des scores triée par nom\n");
-    printf("\t4. Afficher le tableau des scores triée par meilleur score\n");
-    printf("\t5. Afficher les statistiques d'un joueur\n");
-    printf("\t9. Quitter\n");
-    printf("--------------------------------\n");
-    printf("> Choix: ");
-    scanf("%d", &choix);
+    int retourScanf;
+
+    while (choix < 1 && choix != 9) {
+        printf("------------- Menu -------------\n");
+        printf("\t1. Jouer une partie prédéfinie\n");
+        printf("\t2. Créer une nouvelle partie\n");
+        printf("\t3. Afficher le tableau des scores triée par nom\n");
+        printf("\t4. Afficher le tableau des scores triée par meilleur score\n");
+        printf("\t5. Afficher les statistiques d'un joueur\n");
+        printf("\t9. Quitter\n");
+        printf("--------------------------------\n");
+        printf("> Choix: ");
+
+        retourScanf = scanf("%d", &choix);
+
+        if (retourScanf != 1) {
+            printf("Entrée invalide ! Veuillez entrer un nombre.\n"); // EVITE LE PROBLEME DE MENU INFINIE 
+            while (getchar() != '\n');                                // EN CAS D'ENTREE DE CARACTERE
+            choix = -1;
+        }
+    }
+
     return choix;
 }
 
@@ -120,22 +132,29 @@ void deroulerPartie(char* nomFichier, char* pseudo) {
     fgets(contexte, sizeof(contexte), fichier);
     printf("\nContexte : %s\n", contexte);
 
-    fscanf(fichier, "%d", &tailleGroupe1);
+    fgets(contexte, sizeof(contexte), fichier);
+    sscanf(contexte, "%d", &tailleGroupe1);
+
     Monstre groupe1[tailleGroupe1];
 
     for (int i = 0; i < tailleGroupe1; i++) {
-        fscanf(fichier, "%s %d %d %c %c %c %c %c", groupe1[i].nom, &groupe1[i].niveau, &groupe1[i].nombreArmes,
-               &groupe1[i].armes[0], &groupe1[i].armes[1], &groupe1[i].armes[2], &groupe1[i].armes[3], &groupe1[i].armes[4]);
+        char ligne[100];
+        fgets(ligne, sizeof(ligne), fichier);
+
+        sscanf(ligne, "%49s %d %d %c %c %c %c %c",
+               groupe1[i].nom, &groupe1[i].niveau, &groupe1[i].nombreArmes,
+               &groupe1[i].armes[0], &groupe1[i].armes[1], &groupe1[i].armes[2],
+               &groupe1[i].armes[3], &groupe1[i].armes[4]);
 
         groupe1[i].pointsDeVie = (groupe1[i].niveau == 1) ? 4 : (groupe1[i].niveau == 2) ? 6 : 4;
         groupe1[i].degatsParAttaque = (groupe1[i].niveau == 3) ? 2 : 1;
 
-        printf("Le monstre %s (%dptV, %dAtt) accoure et se prépare à vous attaquer %s (%dptV, %dAtt)\n",
+        printf("Le monstre %s (%dptV, %dAtt) attaque %s (%dptV, %dAtt)\n",
                groupe1[i].nom, groupe1[i].pointsDeVie, groupe1[i].degatsParAttaque,
                joueur.pseudo, joueur.pointsDeVie, joueur.degatsParAttaque);
 
         while (groupe1[i].pointsDeVie > 0 && joueur.pointsDeVie > 0) {
-            printf("%s (%dpts), choisissez votre arme parmi P, F, C : ", joueur.pseudo, joueur.pointsDeVie);
+            printf("%s (%dpts), choisissez votre arme pour combattre %s parmi P, F, C : ", joueur.pseudo, joueur.pointsDeVie, groupe1[i].nom);
             char choixJoueur = attaqueJoueur();
 
             printf("%s (%c) attaque %s (%dptV)\n", joueur.pseudo, choixJoueur, groupe1[i].nom, groupe1[i].pointsDeVie);
@@ -156,7 +175,6 @@ void deroulerPartie(char* nomFichier, char* pseudo) {
 
         if (joueur.pointsDeVie <= 0) {
             printf("PERDU... Vous avez été vaincu par %s. Score final : %d\n\n", groupe1[i].nom, score);
-            // miseAJourScore(joueur.pseudo, score, 0);
             fclose(fichier);
             return;
         } else {
@@ -168,24 +186,31 @@ void deroulerPartie(char* nomFichier, char* pseudo) {
     fgets(contexte, sizeof(contexte), fichier);
     printf("\nContexte : %s\n", contexte);
 
-    fscanf(fichier, "%d", &tailleGroupe2);
+    fgets(contexte, sizeof(contexte), fichier);
+    sscanf(contexte, "%d", &tailleGroupe2);
+
     Monstre groupe2[tailleGroupe2];
 
     for (int i = 0; i < tailleGroupe2; i++) {
-        fscanf(fichier, "%s %d %d %c %c %c %c %c", groupe2[i].nom, &groupe2[i].niveau, &groupe2[i].nombreArmes,
-               &groupe2[i].armes[0], &groupe2[i].armes[1], &groupe2[i].armes[2], &groupe2[i].armes[3], &groupe2[i].armes[4]);
+        char ligne[100];
+        fgets(ligne, sizeof(ligne), fichier);
+
+        sscanf(ligne, "%49s %d %d %c %c %c %c %c",
+               groupe2[i].nom, &groupe2[i].niveau, &groupe2[i].nombreArmes,
+               &groupe2[i].armes[0], &groupe2[i].armes[1], &groupe2[i].armes[2],
+               &groupe2[i].armes[3], &groupe2[i].armes[4]);
 
         groupe2[i].pointsDeVie = (groupe2[i].niveau == 1) ? 4 : (groupe2[i].niveau == 2) ? 6 : 4;
         groupe2[i].degatsParAttaque = (groupe2[i].niveau == 3) ? 2 : 1;
     }
 
-    printf("Les monstres du groupe 2 attaquent tous en même temps !\n");
+    printf("Les monstres du groupe 2 attaquent !\n");
     while (joueur.pointsDeVie > 0) {
-        printf("%s (%dpts), choisissez votre arme parmi P, F, C : ", joueur.pseudo, joueur.pointsDeVie);
-        char choixJoueur = attaqueJoueur();
-
         for (int i = 0; i < tailleGroupe2; i++) {
             if (groupe2[i].pointsDeVie > 0) {
+                printf("%s (%dpts), choisissez votre arme pour combattre %s parmi P, F, C : ", joueur.pseudo, joueur.pointsDeVie, groupe2[i].nom);
+                char choixJoueur = attaqueJoueur();
+
                 printf("%s attaque %s\n", joueur.pseudo, groupe2[i].nom);
                 int attaqueMonstreResult = attaqueMonstre(groupe2[i]);
                 int resultat = victoireDuel(attaqueMonstreResult, choixJoueur, groupe2[i]);
@@ -198,7 +223,7 @@ void deroulerPartie(char* nomFichier, char* pseudo) {
                     joueur.pointsDeVie -= groupe2[i].degatsParAttaque;
                     printf("\t%s perd l'attaque contre %s.\n", joueur.pseudo, groupe2[i].nom);
                 } else {
-                    printf("\tAucun des deux n'a remporté l'attaque contre %s.\n", groupe2[i].nom);
+                    printf("\tAucun des deux n'a remporté l'attaque.\n");
                 }
             }
         }
@@ -220,14 +245,12 @@ void deroulerPartie(char* nomFichier, char* pseudo) {
 
         if (joueur.pointsDeVie <= 0) {
             printf("PERDU... Vous avez été vaincu par les monstres du groupe 2... Score final : %d\n\n", score);
-            // miseAJourScore(joueur.pseudo, score, 0);
             fclose(fichier);
             return;
         }
     }
 
     printf("FÉLICITATIONS %s, vous avez terminé la partie avec %d PV restants ! Score final : %d\n", joueur.pseudo, joueur.pointsDeVie, score);
-    // miseAJourScore(joueur.pseudo, score, 1);
     fclose(fichier);
 }
 
@@ -342,17 +365,17 @@ void creerNouvellePartie(char* nomFichier) {
  * \param m Structure du monstre correspondant au duel
  */
 int victoireDuel(int attaque, char choix, Monstre m) {
-    if ((attaque == 1 && choix == 'F') || (attaque == 2 && choix == 'C') || (attaque == 3 && choix == 'P') || (attaque == 4)) {
+    if ((attaque == 1 && choix == 'F') || (attaque == 2 && choix == 'C') || (attaque == 3 && choix == 'P') || (attaque == 5)) {
         return 1;
     }
-    if ((attaque == 1 && choix == 'C') || (attaque == 2 && choix == 'P') || (attaque == 3 && choix == 'F') || (attaque == 5)) {
+    if ((attaque == 1 && choix == 'C') || (attaque == 2 && choix == 'P') || (attaque == 3 && choix == 'F') || (attaque == 4)) {
         return 0;
     }
     return -1;
 }
 
 /**
- * \brief Fonction qui permet de récupérer le choix du joueur
+ * \brief Fonction qui permet de récuprer le choix du joueur
  * \author CABARET Benjamin
  */
 char attaqueJoueur(void) {
