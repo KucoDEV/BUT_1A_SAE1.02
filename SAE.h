@@ -71,6 +71,9 @@ int victoireDuel(int attaque, char choix, Monstre m);
 char attaqueJoueur(void);
 int attaqueMonstre(Monstre m);
 
+void sauvegarde(char * pseudo, int score, int victoire);
+void sauvegardeTableau(Stats ts[],int nbJoueurs, int newJ,char pseudo[],int score,int victoire);
+
 // Fonctions liées à l'affiche
 int ChargeTabAffichage(int choix);
 void tabParNom(Stats ts[],int tlog);

@@ -115,6 +115,7 @@ void deroulerPartie(char* nomFichier, char* pseudo) {
     joueur.pointsDeVie = 20;
     joueur.degatsParAttaque = 1;
     int score = 0;
+    int victoire = 0;
 
     char chemin[50] = "Parties/";
     strcat(nomFichier, ".txt");
@@ -176,6 +177,7 @@ void deroulerPartie(char* nomFichier, char* pseudo) {
         if (joueur.pointsDeVie <= 0) {
             printf("PERDU... Vous avez été vaincu par %s. Score final : %d\n\n", groupe1[i].nom, score);
             fclose(fichier);
+            sauvegarde(joueur.pseudo,score,victoire);
             return;
         } else {
             score += 50 * groupe1[i].niveau;
@@ -240,18 +242,123 @@ void deroulerPartie(char* nomFichier, char* pseudo) {
 
         if (monstresRestants == 0) {
             printf("Tous les monstres du groupe 2 ont été vaincus ! Score final : %d\n\n", score);
+            victoire = 1;
             break;
         }
 
         if (joueur.pointsDeVie <= 0) {
             printf("PERDU... Vous avez été vaincu par les monstres du groupe 2... Score final : %d\n\n", score);
             fclose(fichier);
+            sauvegarde(joueur.pseudo,score,victoire);
             return;
         }
     }
 
     printf("FÉLICITATIONS %s, vous avez terminé la partie avec %d PV restants ! Score final : %d\n", joueur.pseudo, joueur.pointsDeVie, score);
     fclose(fichier);
+
+    sauvegarde(joueur.pseudo,score,victoire);
+}
+
+void sauvegarde(char * pseudo, int score, int victoire)
+{
+    FILE * tscore = fopen("Parties/scoreboard.txt", "r");
+    if (tscore == NULL)
+    {
+        printf("pb ouverture de fichier\n");
+        return;
+    }
+    
+    int nbJoueurs;
+    fscanf(tscore, "%d", &nbJoueurs);
+    
+    int i=0;
+    Stats ts[nbJoueurs+1]; // +1 s'il faut rajouter un nouveau joueur
+
+    for (i=0; i<nbJoueurs; i++)
+    {
+        fscanf(tscore, "%s %d %f %d %d %d", 
+                        ts[i].pseudo,
+                        &ts[i].meilleurScore,
+                        &ts[i].moyenneScores,
+                        &ts[i].nbParties,
+                        &ts[i].victoire,
+                        &ts[i].defaite);
+    }
+    fclose(tscore);
+
+    // Recherche si le joueur existe deja dans le fichier
+
+    int trouve;
+    int newP = 0;
+
+    triEchangeNom(ts,nbJoueurs);
+
+    trouve = rechercheDichomatique(ts,nbJoueurs,pseudo);
+
+    if (trouve != -1) // si trouvé 
+    {
+        if (ts[trouve].meilleurScore < score)
+            ts[trouve].meilleurScore = score;
+        ts[trouve].moyenneScores = (ts[trouve].moyenneScores*ts[trouve].nbParties+score)/(ts[trouve].nbParties+1);
+        ts[trouve].nbParties = ts[trouve].nbParties +1;
+
+        if (victoire == 1)
+            ts[trouve].victoire = ts[trouve].victoire + 1;
+        else
+            ts[trouve].defaite = ts[trouve].defaite + 1;    
+
+        sauvegardeTableau(ts,nbJoueurs+1,newP,pseudo,score,victoire);
+    }
+    else if (trouve == -1) // si pas trouvé donc nouveau joueur
+    {
+        newP = 1;
+        sauvegardeTableau(ts,nbJoueurs+1,newP,pseudo,score,victoire);
+    }
+}
+
+void sauvegardeTableau(Stats ts[],int nbJoueurs, int newJ, char pseudo[],int score,int victoire)
+{
+    FILE * tscore = fopen("Parties/scoreboard.txt", "w");
+        if (tscore == NULL)
+        {
+            printf("pb ouverture de fichier\n");
+            return ;
+        }
+    if (newJ==1)
+        fprintf(tscore, "%d\n", nbJoueurs);
+    else
+        fprintf(tscore, "%d\n", nbJoueurs-1);
+        
+    int i;
+
+    for (i = 0; i < nbJoueurs-1; i++)
+        {
+            fprintf(tscore, "%s %d %f %d %d %d\n", 
+                    ts[i].pseudo,
+                    ts[i].meilleurScore,
+                    ts[i].moyenneScores,
+                    ts[i].nbParties,
+                    ts[i].victoire,
+                    ts[i].defaite);
+        }
+        if (newJ == 1)
+        {
+            int defaite;
+            if (victoire == 1)
+                defaite = 0;
+            else
+                defaite = 1;
+
+            fprintf(tscore, "%s %d %f %d %d %d\n", 
+                    pseudo,
+                    score,
+                    (float)score,
+                    1,
+                    victoire,
+                    defaite);
+        }
+    fclose(tscore);  
 }
 
 /**
@@ -400,6 +507,10 @@ int attaqueMonstre(Monstre m) {
     int min = 1, max = (m.niveau == 1 ? 4 : (m.niveau == 2 ? 3 : 5));
     return (rand() % (max - min + 1)) + min;
 }
+
+
+//-------------------- Partie Affichage des Scores et Statistiques --------------------
+
 
 /**
  * \brief Fonction qui permet de charger les joueurs dans le scoreboard
