@@ -7,12 +7,6 @@
  */
 #include "SAE.h"
 
-/**
- * \brief Fonction qui affiche le menu principal du jeu et demande ce que l'utilisateur veut faire
- * \author CABARET Benjamin
- * 
- * \return Le choix de l'utilisateur
- */
 int menu(void) {
     int choix;
     int retourScanf;
@@ -40,10 +34,6 @@ int menu(void) {
     return choix;
 }
 
-/**
- * \brief Fonction qui redirige l'utilisateur en fonction de son choix dans le menu
- * \author CABARET Benjamin
- */
 void global(void) {
     int choix;
     int score = 0;
@@ -102,13 +92,6 @@ void global(void) {
     printf("Merci d'avoir joué, à bientôt!\n");
 }
 
-/**
- * \brief Fonction qui gère entièrement la partie
- * \authors CABARET Benjamin, PICHOT-MOÏSE Mathéo
- * 
- * \param nomFichier Nom du fichier de la partie prédéfinie
- * \param pseudo Pseudo du joueur
- */
 void deroulerPartie(char* nomFichier, char* pseudo) {
     Joueur joueur;
     strcpy(joueur.pseudo, pseudo);
@@ -260,8 +243,7 @@ void deroulerPartie(char* nomFichier, char* pseudo) {
     sauvegarde(joueur.pseudo,score,victoire);
 }
 
-void sauvegarde(char * pseudo, int score, int victoire)
-{
+void sauvegarde(char * pseudo, int score, int victoire) {
     FILE * tscore = fopen("Parties/scoreboard.txt", "r");
     if (tscore == NULL)
     {
@@ -317,8 +299,7 @@ void sauvegarde(char * pseudo, int score, int victoire)
     }
 }
 
-void sauvegardeTableau(Stats ts[],int nbJoueurs, int newJ, char pseudo[],int score,int victoire)
-{
+void sauvegardeTableau(Stats ts[],int nbJoueurs, int newJ, char pseudo[],int score,int victoire) {
     FILE * tscore = fopen("Parties/scoreboard.txt", "w");
         if (tscore == NULL)
         {
@@ -361,12 +342,6 @@ void sauvegardeTableau(Stats ts[],int nbJoueurs, int newJ, char pseudo[],int sco
     fclose(tscore);  
 }
 
-/**
- * \brief Fonction qui permet de créer une partie prédéfinie qui sera stocker dans un fichier
- * \author PICHOT-MOÏSE Mathéo
- * 
- * \param nomFichier Nom du fichier dans lequel la partie sera stocker
- */
 void creerNouvellePartie(char* nomFichier) {
     char chemin[20] = "Parties/";
     strcat(nomFichier, ".txt");
@@ -463,14 +438,6 @@ void creerNouvellePartie(char* nomFichier) {
     printf("Nouvelle partie créée avec succès dans le fichier %s.\n", nomFichier);
 }
 
-/**
- * \brief Fonction qui permet de gérer les duels
- * \author CABARET Benjamin
- * 
- * \param attaque L'attaque du monstre
- * \param choix Le choix du joueur
- * \param m Structure du monstre correspondant au duel
- */
 int victoireDuel(int attaque, char choix, Monstre m) {
     if ((attaque == 1 && choix == 'F') || (attaque == 2 && choix == 'C') || (attaque == 3 && choix == 'P') || (attaque == 5)) {
         return 1;
@@ -481,10 +448,6 @@ int victoireDuel(int attaque, char choix, Monstre m) {
     return -1;
 }
 
-/**
- * \brief Fonction qui permet de récuprer le choix du joueur
- * \author CABARET Benjamin
- */
 char attaqueJoueur(void) {
     char choix;
     scanf(" %c", &choix);
@@ -497,12 +460,6 @@ char attaqueJoueur(void) {
     return choix;
 }
 
-/**
- * \brief Fonction qui génére aléatoirement une arme pour le monstre
- * \author CABARET Benjamin
- * 
- * \param m Structure du monstre correspondant
- */
 int attaqueMonstre(Monstre m) {
     int min = 1, max = (m.niveau == 1 ? 4 : (m.niveau == 2 ? 3 : 5));
     return (rand() % (max - min + 1)) + min;
@@ -511,13 +468,6 @@ int attaqueMonstre(Monstre m) {
 
 //-------------------- Partie Affichage des Scores et Statistiques --------------------
 
-
-/**
- * \brief Fonction qui permet de charger les joueurs dans le scoreboard
- * \author MIOTTO Quentin
- * 
- * \param choix Le choix du joueur
- */
 int ChargeTabAffichage(int choix) {
     FILE * tscore = fopen("Parties/scoreboard.txt", "r");
     if (tscore == NULL)
@@ -559,13 +509,6 @@ int ChargeTabAffichage(int choix) {
     }
 }
 
-/**
- * \brief Fonction qui permet d'afficher le tableau des scores par nom
- * \author MIOTTO Quentin
- * 
- * \param ts Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
- */
 void tabParNom(Stats ts[],int tlog) {
     int choix = 0;
     char lettreCible;
@@ -597,13 +540,6 @@ void tabParNom(Stats ts[],int tlog) {
     }
 }
 
-/**
- * \brief Fonction qui permet d'afficher le tableau des scores par score
- * \author MIOTTO Quentin
- * 
- * \param ts Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
- */
 void tabParScore(Stats ts[],int tlog) {
     int choix = 0;
 
@@ -693,13 +629,6 @@ void tabParScore(Stats ts[],int tlog) {
     }
 } 
 
-/**
- * \brief Fonction qui permet de rechercher un joueur dans le tableau des scores
- * \author MIOTTO Quentin
- * 
- * \param ts Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
- */
 void rechercherJoueur(Stats ts[],int tlog) {
     char cible[20];
     int trouve;
@@ -717,15 +646,6 @@ void rechercherJoueur(Stats ts[],int tlog) {
         printf("Le Joueur '%s' n'existe pas\n",cible);
 }
 
-/**
- * \brief Fonction qui permet d'afficher les statistiques d'un joueur
- * \author MIOTTO Quentin
- * 
- * \param ts Tableau des stats
- * \param tlo Nombre de joueur dans le tableau
- * \param trouve La place du joueur
- * \param cible Le pseudo du joueur
- */
 void affichageJoueur(Stats ts[],int tlo, int trouve, char cible[]) {
     printf("--------------------------------\n");
     printf("Statistique du joueur %s : \n\n",cible);
@@ -736,15 +656,6 @@ void affichageJoueur(Stats ts[],int tlo, int trouve, char cible[]) {
     printf("\tDéfaite : %d\n\n", ts[trouve].defaite);
 }
 
-/**
- * \brief Fonction qui permet de renvoyer l'indice (place dans le tableau) du pseudo d'un joueur le plus petit (dans l'ordre alphabetique)
- * \author MIOTTO Quentin
- * 
- * \param tab Tableau des stats
- * \param n Nombre de joueur dans le tableau
- * 
- * \return l'indice du plus petit pseudo d'un joueur
- */
 int plusGrandNom(Stats tab[], int n) {
     int pge = 0;
     int i;
@@ -758,15 +669,6 @@ int plusGrandNom(Stats tab[], int n) {
     return pge;
 }
 
-/**
- * \brief Fonction qui permet de renvoyer l'indice (place dans le tableau) du Joueur ayant le grand Score
- * \author MIOTTO Quentin
- * 
- * \param ts Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
- * 
- * \return l'indice du Joueur ayant le plus grand Score
- */
 int plusGrandScore(Stats tab[],int n) {
     int pge=0;
     int i;
@@ -780,27 +682,12 @@ int plusGrandScore(Stats tab[],int n) {
     return pge;
 }
 
-/**
- * \brief Fonction qui permet d'échanger 2 éléments dans le tableau des scores
- * \author MIOTTO Quentin
- * 
- * \param tab Tableau des stats
- * \param i Le premier élément à échanger
- * \param j Le second élément à échanger
- */
 void echanger(Stats tab[], int i, int j) {
     Stats tmp = tab[j];
     tab[j] = tab[i];
     tab[i] = tmp;
 }
 
-/**
- * \brief Fonction qui permet de trier le tableau des stats par nom
- * \author MIOTTO Quentin
- * 
- * \param tab Tableau des stats
- * \param n Nombre de joueur dans le tableau
- */
 void triEchangeNom(Stats tab[], int n) {
     int max;
     while (n > 1)
@@ -811,13 +698,6 @@ void triEchangeNom(Stats tab[], int n) {
     }
 }
 
-/**
- * \brief Fonction qui permet de trier le tableau des stats par score
- * \author MIOTTO Quentin
- * 
- * \param tab Tableau des stats
- * \param n Nombre de joueur dans le tableau
- */
 void triEchangeScore(Stats tab[], int n) {
     int max;
     while (n > 1)
@@ -828,13 +708,6 @@ void triEchangeScore(Stats tab[], int n) {
     }
 }
 
-/**
- * \brief Fonction qui permet d'afficher le tableau des scores par score
- * \author MIOTTO Quentin
- * 
- * \param tab Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
- */
 void afficherTableauScore(Stats tab[], int tlog) {
     int i;
     printf("--------------------------------\n");
@@ -849,13 +722,6 @@ void afficherTableauScore(Stats tab[], int tlog) {
     printf("\n");
 }
 
-/**
- * \brief Fonction qui permet d'afficher le tableau des scores par nom
- * \author MIOTTO Quentin
- * 
- * \param tab Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
- */
 void afficherTableauNom(Stats tab[], int tlog) {
     int i;
     printf("--------------------------------\n");
@@ -870,14 +736,6 @@ void afficherTableauNom(Stats tab[], int tlog) {
     printf("\n");
 }
 
-/**
- * \brief Fonction qui permet d'effectuer une recherche dichomatique dans le tableau des scores
- * \author MIOTTO Quentin
- * 
- * \param tab Tableau des stats
- * \param n Nombre de joueur dans le tableau
- * \param cible Le joueur voulu
- */
 int rechercheDichomatique(Stats tab[], int n, char cible[]) {
     int inf = 0;
     int sup = n - 1;
@@ -897,14 +755,6 @@ int rechercheDichomatique(Stats tab[], int n, char cible[]) {
     return -1;
 }
 
-/**
- * \brief Fonction qui permet d'afficher tout les pseudo en fonction d'une lettre
- * \author MIOTTO Quentin
- * 
- * \param tab Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
- * \param Lettre La lettre que l'on souhaite chercher
- */
 void affichageLettre(Stats tab[], int tlog, char Lettre) {
     int i;
     printf("--------------------------------\n");
@@ -925,14 +775,6 @@ void affichageLettre(Stats tab[], int tlog, char Lettre) {
     printf("\n");
 }
 
-/**
- * \brief Fonction qui permet d'afficher le tableau des scores à partir du bas et limiter la taille du tableau afficher en fonction de x
- * \author MIOTTO Quentin
- * 
- * \param ts Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
- * \param x taille du tableau afficher choisis dans le menu par l'utilisateur (10 ou 25)
- */
 void afficherDerniers(Stats tab[], int tlog, int x) {
     int i;
     printf("--------------------------------\n");
