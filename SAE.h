@@ -19,9 +19,9 @@
  * 
  * \param pseudo Pseudo du joueur
  * \param pointsDeVie Points de vie du joueur
- * \param degatsParAttaque Dégats par attaque du joueur
+ * \param degatsParAttaque Dégâts par attaque du joueur
  * \param scores Tableau des scores du joueur
- * \param partiesJouees Nombre de parties jouée
+ * \param partiesJouees Nombre de parties jouées
  * \param partiesGagnees Nombre de parties gagnée
  * \param partiesPerdues Nombre de parties perdues
  */
@@ -42,7 +42,7 @@ typedef struct {
  * \param nom Nom du monstre
  * \param pointsDeVie Points de vie du joueur
  * \param niveau Niveau du monstre
- * \param degatsParAttaque Dégats par attaque du joueur
+ * \param degatsParAttaque Dégâts par attaque du joueur
  * \param nombreArmes Nombre d'arme disponible pour le monstre
  * \param groupe Le groupe auquel il appartient
  * \param armes Tableau contenant ses armes
@@ -71,7 +71,7 @@ typedef enum {
 
 /**
  * \struct Stats
- * \brief Permet de récuperer les stats des joueurs
+ * \brief Permet de récupérer les statistiques des joueurs
  * 
  * \param pseudo Pseudo du joueur
  * \param meilleurScore Meilleur score du joueur
@@ -113,10 +113,10 @@ int menu(void);
 void deroulerPartie(char* nomFichier, char* pseudo);
 
 /**
- * \brief Fonction qui permet de créer une partie prédéfinie qui sera stocker dans un fichier
+ * \brief Fonction qui permet de créer une partie prédéfinie qui sera stockée dans un fichier
  * \author PICHOT-MOÏSE Mathéo
  * 
- * \param nomFichier Nom du fichier dans lequel la partie sera stocker
+ * \param nomFichier Nom du fichier dans lequel la partie sera stockée
  */
 void creerNouvellePartie(char* nomFichier);
 
@@ -145,7 +145,7 @@ char attaqueJoueur(void);
 int attaqueMonstre(Monstre m);
 
 /**
- * \brief Fonction qui permet de préparer la sauvgerde
+ * \brief Fonction qui permet de préparer la sauvegarde
  * \author MIOTTO Quentin
  * 
  * \param pseudo Pseudo du joueur
@@ -159,7 +159,7 @@ void sauvegarde(char * pseudo, int score, int victoire);
  * \author MIOTTO Quentin
  * 
  * \param ts Tableau des scores
- * \param nbJoueurs Nombre de joueur dans le fichier
+ * \param nbJoueurs Nombre de joueurs dans le fichier
  * \param newJ Sert a savoir si c'est un nouveau joueur ou non
  * \param pseudo Pseudo du joueur
  * \param score Score du joueur
@@ -180,7 +180,7 @@ int ChargeTabAffichage(int choix);
  * \author MIOTTO Quentin
  * 
  * \param ts Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
+ * \param tlog Nombre de joueurs dans le tableau
  */
 void tabParNom(Stats ts[],int tlog);
 
@@ -189,7 +189,7 @@ void tabParNom(Stats ts[],int tlog);
  * \author MIOTTO Quentin
  * 
  * \param ts Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
+ * \param tlog Nombre de joueurs dans le tableau
  */
 void tabParScore(Stats ts[],int tlog);
 
@@ -198,7 +198,7 @@ void tabParScore(Stats ts[],int tlog);
  * \author MIOTTO Quentin
  * 
  * \param ts Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
+ * \param tlog Nombre de joueurs dans le tableau
  */
 void rechercherJoueur(Stats ts[],int tlog);
 
@@ -207,7 +207,7 @@ void rechercherJoueur(Stats ts[],int tlog);
  * \author MIOTTO Quentin
  * 
  * \param tab Tableau des stats
- * \param n Nombre de joueur dans le tableau
+ * \param n Nombre de joueurs dans le tableau
  * 
  * \return l'indice du plus petit pseudo d'un joueur
  */
@@ -218,7 +218,7 @@ int plusGrandNom(Stats tab[], int n);
  * \author MIOTTO Quentin
  * 
  * \param ts Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
+ * \param tlog Nombre de joueurs dans le tableau
  * 
  * \return l'indice du Joueur ayant le plus grand Score
  */
@@ -235,20 +235,20 @@ int plusGrandScore(Stats tab[],int n);
 void echanger(Stats tab[], int i, int j);
 
 /**
- * \brief Fonction qui permet de trier le tableau des stats par nom
+ * \brief Fonction qui permet de trier le tableau des statistiques par nom
  * \author MIOTTO Quentin
  * 
  * \param tab Tableau des stats
- * \param n Nombre de joueur dans le tableau
+ * \param n Nombre de joueurs dans le tableau
  */
 void triEchangeNom(Stats tab[], int n);
 
 /**
- * \brief Fonction qui permet de trier le tableau des stats par score
+ * \brief Fonction qui permet de trier le tableau des statistiques par score
  * \author MIOTTO Quentin
  * 
  * \param tab Tableau des stats
- * \param n Nombre de joueur dans le tableau
+ * \param n Nombre de joueurs dans le tableau
  */
 void triEchangeScore(Stats tab[], int n);
 
@@ -257,7 +257,7 @@ void triEchangeScore(Stats tab[], int n);
  * \author MIOTTO Quentin
  * 
  * \param tab Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
+ * \param tlog Nombre de joueurs dans le tableau
  */
 void afficherTableauScore(Stats tab[], int tlog);
 
@@ -266,7 +266,7 @@ void afficherTableauScore(Stats tab[], int tlog);
  * \author MIOTTO Quentin
  * 
  * \param tab Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
+ * \param tlog Nombre de joueurs dans le tableau
  */
 void afficherTableauNom(Stats tab[], int tlog);
 
@@ -275,7 +275,7 @@ void afficherTableauNom(Stats tab[], int tlog);
  * \author MIOTTO Quentin
  * 
  * \param tab Tableau des stats
- * \param n Nombre de joueur dans le tableau
+ * \param n Nombre de joueurs dans le tableau
  * \param cible Le joueur voulu
  */
 int rechercheDichomatique(Stats tab[],int n,char cible[]);
@@ -285,7 +285,7 @@ int rechercheDichomatique(Stats tab[],int n,char cible[]);
  * \author MIOTTO Quentin
  * 
  * \param ts Tableau des stats
- * \param tlo Nombre de joueur dans le tableau
+ * \param tlo Nombre de joueurs dans le tableau
  * \param trouve La place du joueur
  * \param cible Le pseudo du joueur
  */
@@ -296,7 +296,7 @@ void affichageJoueur(Stats ts[],int tlo, int trouve, char cible[]);
  * \author MIOTTO Quentin
  * 
  * \param tab Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
+ * \param tlog Nombre de joueurs dans le tableau
  * \param Lettre La lettre que l'on souhaite chercher
  */
 void affichageLettre(Stats tab[], int tlog, char Lettre);
@@ -306,7 +306,7 @@ void affichageLettre(Stats tab[], int tlog, char Lettre);
  * \author MIOTTO Quentin
  * 
  * \param ts Tableau des stats
- * \param tlog Nombre de joueur dans le tableau
+ * \param tlog Nombre de joueurs dans le tableau
  * \param x taille du tableau afficher choisis dans le menu par l'utilisateur (10 ou 25)
  */
 void afficherDerniers(Stats tab[], int tlog, int x);
