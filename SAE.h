@@ -1,6 +1,6 @@
 /**
  * \file SAE.c
- * \brief Fichier contenant les déclarations des fonctions de la SAE
+ * \brief Fichier d'en-tête contenant les déclarations des structures de données et des prototypes de fonctions.
  * 
  * \authors CABARET Benjamin, MIOTTO Quentin, PICHOT-MOÏSE Mathéo
  * \date 5 décembre 2024 -> 10 janvier 2025

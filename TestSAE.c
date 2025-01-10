@@ -1,6 +1,6 @@
 /**
  * \file TestSAE.c
- * \brief Fichier permettant le fonctionnement de la SAE
+ * \brief Contient la fonction main et un test spécifique pour le fonctionnement des duels.
  * 
  * \authors CABARET Benjamin, MIOTTO Quentin, PICHOT-MOÏSE Mathéo
  * \date 5 décembre 2024 -> 10 janvier 2025

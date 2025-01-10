@@ -1,6 +1,6 @@
 /**
  * \file SAE.c
- * \brief Fichier contenant les fonctions de la SAE
+ * \brief Contient l'ensemble des fonctions liées au déroulement du jeu, gestion des parties, duels, affichage des scores et statistiques.
  * 
  * \authors CABARET Benjamin, MIOTTO Quentin, PICHOT-MOÏSE Mathéo
  * \date 5 décembre 2024 -> 10 janvier 2025
