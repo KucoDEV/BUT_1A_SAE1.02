@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['tabparnom_0',['tabParNom',['../_s_a_e_8c.html#aac71e09b81087c7553f38d9eacc9d7f1',1,'SAE.c']]],
-  ['tabparscore_1',['tabParScore',['../_s_a_e_8c.html#a6434416089a7fa0f81420a529c8bcbe4',1,'SAE.c']]],
-  ['testduel_2',['testDuel',['../_test_s_a_e_8c.html#ab5df1ebde6a9dd018715a423810e78a3',1,'TestSAE.c']]],
-  ['testsae_2ec_3',['TestSAE.c',['../_test_s_a_e_8c.html',1,'']]],
-  ['triechangenom_4',['triEchangeNom',['../_s_a_e_8c.html#a6f5d60cfca6a38ebd9ddffdfc4c946ef',1,'SAE.c']]],
-  ['triechangescore_5',['triEchangeScore',['../_s_a_e_8c.html#aa5fe7476549ec0989e3fec63e93dee9e',1,'SAE.c']]]
+  ['recherchedichomatique_0',['rechercheDichomatique',['../_s_a_e_8c.html#a6fd4897baad8ae9e8ff55c0bc24fa9ab',1,'SAE.c']]],
+  ['rechercherjoueur_1',['rechercherJoueur',['../_s_a_e_8c.html#a13e4c716ca4cc66baec549695e9b1ae6',1,'SAE.c']]]
 ];
